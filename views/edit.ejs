@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>플랩 풋볼</title>
+</head>
+<style>
+    .box{
+        width: 300px;
+        height: 30px; 
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    //회원 정보 수정
+    function updateUser() {
+        var form = document.getElementById("form_profile");
+        axios({
+           method: 'patch',
+           url: 'http://localhost:3000/patch',
+           data: {
+                user_id: form.id.value,
+                user_pw: form.pw.value,
+                user_name: form.name.value
+           } 
+        }).then((response) => { 
+            return response.data;
+        }).then((data) => {
+            console.log("회원정보 수정완료");
+            alert("수정완료");
+        });
+    }
+
+    // 회원 삭제
+    function deleteUser() {
+        var form = document.getElementById("form_profile");
+        axios({
+           method: 'delete',
+           url: 'http://localhost:3000/delete',
+           data: { user_id: form.id.value } 
+        }).then((response) => { return response.data; })
+        .then((data) => { 
+            alert("회원 탈퇴 완료");
+
+            var form_info = document.getElementById("form_info");
+            form_info.submit();
+         });
+    }
+</script>
+<body>
+    <h1>회원 수정</h1>
+    <form id="form_profile">    
+        <div>
+            <label for="id">이메일</label><br>
+            <input name="id" type="email" class="box" placeholder="이메일을 입력하세요" value="<%=edit.user_id>" readonly />
+        </div>
+        <div>
+            <label for="password">비밀번호</label><br>
+            <input name="pw" type="password" class="box" placeholder="비밀번호를 입력하세요" value="<%=edit.user_pw>" required /> 
+        </div>
+        <!-- <div>
+            <label for="pwcheck">비밀번호 확인</label><br>
+            <input name="pw_check" type="password" class="box" placeholder="비밀번호를 한번 더 입력하세요"  required /> 
+        </div> -->
+        <div>
+            <label for="name"">이름</label><br>
+            <input name="name" type="text" class="box" placeholder="이름을 입력하세요" readonly /> 
+        </div>
+        <div>
+            <label for="gender"">성별</label><br>
+            <select name="gender" class="box">
+              <option value="" disabled selected>성별을 선택하세요</option>
+              <option value="남자">남자</option>
+              <option value="여자">여자</option>
+            </select>
+        </div>
+        <!-- <div>
+            <label for="user_birth"">생년월일</label><br>
+            <input name="birth" type="text" class="box" placeholder="예) 0000-00-00" required /> 
+        </div>
+        <div>
+            <label for="user_phone"">휴대폰 번호</label><br>
+            <input name="phone" type="text" class="box" placeholder="예) 01012345678"  required /> 
+        </div> -->
+        <div>
+            <button type="button" onclick="joinUser()" class="box" style="background-color: rgb(47, 78, 255); color:white"">수정</button>
+        </div>
+        <div>
+            <button onclick="history.back()" class="box" style="background-color: rgb(50, 50, 50); color:white">취소</button>
+      </div>
+    </form>     
+</body>
+</html>
